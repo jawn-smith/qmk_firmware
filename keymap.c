@@ -1,12 +1,9 @@
-/* Check on proper usage of MT and LT.
-   What should happen is if you tap the Fn key you get an exclamation point
-   If you tap the Num key you should get an equals sign
-   If either one is held they take you to a new layer
-   
-   Set up macros over shift keys for custom keys 
-  
-   Make sure that switching between layers is working correctly
-*/
+/*******************************************
+ * QMK firmware for a let's split keyboard
+ *
+ * William Wilson
+ * June 16, 2017
+ ******************************************/
 
 #include "lets_split.h"
 #include "action_layer.h"
@@ -15,27 +12,30 @@
 extern keymap_config_t keymap_config;
 
 #define _DVORAK 0
+#define _NUMPAD 1
 #define _SYMBOLS 2
 #define _FN 3
-#define _NUMPAD 1
 #define _MACROS 4
-#define _CAPS 7
-#define _CAPS2 8
-#define _RCAPS 9
+#define _QWERTY 5
+#define _QNUMPAD 6
+#define _QSYMBOLS 7
+#define _QFN 8
+#define _QMACROS 9
 
 #define KC_ KC_TRNS
 #define _______ KC_TRNS
 
 #define KC_NMPD TG(_NUMPAD)
 #define KC_SYMB TG(_SYMBOLS)
-#define KC_SPFN LT(_FN,KC_PERC)
-#define KC_SPCT MT(MOD_LCTL, LSFT(KC_1))
-#define KC_SPLT MT(MOD_LALT, LSFT(KC_7))
+#define KC_QNUM TG(_QNUMPAD)
+#define KC_QSYM TG(_QSYMBOLS)
+#define KC_QSFN LT(_QFN,KC_MINS)
+#define KC_SPFN LT(_FN,KC_MINS)
+#define KC_SPCT MT(MOD_LCTL, KC_BSLS)
+#define KC_SPLT MT(MOD_LALT, KC_EQL)
+#define KC_GBRC MT(MOD_RGUI, KC_RBRC)
 #define KC_MESC LT(_MACROS, KC_ESC)
-#define KC_LSMC LT(_CAPS, LSFT(KC_9))
-#define KC_RSMC LT(_RCAPS, LSFT(KC_0))
-#define KC_RST1 LT(5, KC_DEL)
-#define KC_RST2 MO(6)
+#define KC_QESC LT(_QMACROS, KC_ESC)
 #define KC_GLPK M(0)
 #define KC_JERY M(1)
 #define KC_IMGR M(2)
@@ -44,100 +44,47 @@ extern keymap_config_t keymap_config;
 #define KC_PULL M(5)
 #define KC_PUSH M(6)
 #define KC_SPCS M(7)
+#define KC_PSWD M(8)
 #define KC_CAD LALT(LCTL(KC_DEL))
 #define KC_LOCK LGUI(KC_L)
 #define KC_DVRK TO(_DVORAK)
-#define KC_CPLK TO(_CAPS2)
+#define KC_QWRT TO(_QWERTY)
 
-#define KC_CAPA LSFT(KC_A)
-#define KC_CAPB LSFT(KC_B)
-#define KC_CAPC LSFT(KC_C)
-#define KC_CAPD LSFT(KC_D)
-#define KC_CAPE LSFT(KC_E)
-#define KC_CAPF LSFT(KC_F)
-#define KC_CAPG LSFT(KC_G)
-#define KC_CAPH LSFT(KC_H)
-#define KC_CAPI LSFT(KC_I)
-#define KC_CAPJ LSFT(KC_J)
-#define KC_CAPK LSFT(KC_K)
-#define KC_CAPL LSFT(KC_L)
-#define KC_CAPM LSFT(KC_M)
-#define KC_CAPN LSFT(KC_N)
-#define KC_CAPO LSFT(KC_O)
-#define KC_CAPP LSFT(KC_P)
-#define KC_CAPQ LSFT(KC_Q)
-#define KC_CAPR LSFT(KC_R)
-#define KC_CPS LSFT(KC_S)
-#define KC_CAPT LSFT(KC_T)
-#define KC_CAPU LSFT(KC_U)
-#define KC_CAPV LSFT(KC_V)
-#define KC_CAPW LSFT(KC_W)
-#define KC_CAPX LSFT(KC_X)
-#define KC_CAPY LSFT(KC_Y)
-#define KC_CAPZ LSFT(KC_Z)
-
-#define KC_RAPA RSFT(KC_A)
-#define KC_RAPB RSFT(KC_B)
-#define KC_RAPC RSFT(KC_C)
-#define KC_RAPD RSFT(KC_D)
-#define KC_RAPE RSFT(KC_E)
-#define KC_RAPF RSFT(KC_F)
-#define KC_RAPG RSFT(KC_G)
-#define KC_RAPH RSFT(KC_H)
-#define KC_RAPI RSFT(KC_I)
-#define KC_RAPJ RSFT(KC_J)
-#define KC_RAPK RSFT(KC_K)
-#define KC_RAPL RSFT(KC_L)
-#define KC_RAPM RSFT(KC_M)
-#define KC_RAPN RSFT(KC_N)
-#define KC_RAPO RSFT(KC_O)
-#define KC_RAPP RSFT(KC_P)
-#define KC_RAPQ RSFT(KC_Q)
-#define KC_RAPR RSFT(KC_R)
-#define KC_RPS  RSFT(KC_S)
-#define KC_RAPT RSFT(KC_T)
-#define KC_RAPU RSFT(KC_U)
-#define KC_RAPV RSFT(KC_V)
-#define KC_RAPW RSFT(KC_W)
-#define KC_RAPX RSFT(KC_X)
-#define KC_RAPY RSFT(KC_Y)
-#define KC_RAPZ RSFT(KC_Z)
-
-  const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_DVORAK] = KC_KEYMAP(
   //,----+----+----+----+----+----.    ,----+----+----+----+----+----.
-     MESC,QUOT,COMM,DOT , P  , Y  ,      F  , G  , C  , R  , L  ,BSPC,
+     MESC,QUOT,COMM,DOT , P  , Y  ,      F  , G  , C  , R  , L  ,SLSH,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
      TAB , A  , O  , E  , U  , I  ,      D  , H  , T  , N  , S  , ENT,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-     LSMC,SCLN, Q  , J  , K  , X  ,      B  , M  , W  , V  , Z  ,RSMC,
+     LSPO,SCLN, Q  , J  , K  , X  ,      B  , M  , W  , V  , Z  ,RSPC,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-     SPCT,SPFN,SPLT,UNDS,NMPD,SLSH,     SPC ,SYMB,ASTR,EQL ,LBRC,RBRC
+     SPCT,SPFN,SPLT,AMPR,NMPD,BSPC,     SPC ,SYMB,ASTR,EXLM,LBRC,GBRC
   //`----+----+----+----+----+----'    `----+----+----+----+----+----'
   ),
 
   [_NUMPAD] = KC_KEYMAP(
   //,----+----+----+----+----+----.    ,----+----+----+----+----+----.
-         ,    ,    ,    ,    ,    ,         ,  7 ,  8 ,  9 ,MINS,BSPC,
+         ,    ,    ,    ,    ,    ,         ,  7 ,  8 ,  9 ,MINS,SLSH,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,    ,    ,    ,         ,  4 ,  5 ,  6 ,PLUS, EQL,
+         ,    ,    ,    ,    ,    ,         ,  4 ,  5 ,  6 ,PLUS, ENT,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-     LSFT,    ,    ,    ,    ,    ,         ,  1 ,  2 ,  3 ,ASTR, ENT,
+     LSFT,    ,    ,    ,    ,    ,         ,  1 ,  2 ,  3 ,ASTR, EQL,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,    ,    ,    ,     SPC ,  0 ,  0 , DOT,SLSH, ENT
+         ,    ,    ,    ,    ,BSPC,     SPC ,  0 ,  0 , DOT,SLSH,RGUI
   //`----+----+----+----+----+----'    `----+----+----+----+----+----'
   ),
 
   [_SYMBOLS] = KC_KEYMAP(
   //,----+----+----+----+----+----.    ,----+----+----+----+----+----.
-         ,EXLM, AT ,HASH,DLR ,PERC,     CIRC,AMPR,ASTR,LPRN,RPRN,BSPC,
+         ,EXLM, AT ,HASH,DLR ,PERC,     CIRC,AMPR,ASTR,LPRN,RPRN,SLSH,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
       F1 , F2 , F3 , F4 , F5 , F6 ,     TILD,EQL ,UNDS,LCBR,RCBR,PIPE,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
       F7 , F8 , F9 , F10, F11, F12,     GRV ,PLUS,MINS,LBRC,RBRC,BSLS,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-     LGUI,    ,    ,    ,    ,    ,     SPC ,    ,    ,    ,    ,    
+         ,    ,    ,    , NO ,BSPC,     SPC ,    ,    ,    ,    ,RGUI
   //`----+----+----+----+----+----'    `----+----+----+----+----+----'
   ),
 
@@ -149,77 +96,81 @@ extern keymap_config_t keymap_config;
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
          ,    ,    ,    ,    ,    ,         ,PGUP,PGDN,    ,    ,    ,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,    ,    ,    ,         ,    ,    ,    ,    ,   
+         ,    ,    ,    ,    ,DEL ,         ,    ,    ,    ,    ,   
   //`----+----+----+----+----+----'    `----+----+----+----+----+----'
   ),
 
   [_MACROS] = KC_KEYMAP(
   //,----+----+----+----+----+----.    ,----+----+----+----+----+----.
-         ,    ,PULL,PUSH,    ,    ,         ,GLPK,    ,    ,IMGR,RST1,
+         ,    ,PULL,PUSH,PSWD,    ,         ,GLPK,    ,    ,IMGR,    ,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
          ,    ,    ,EML ,    ,INCL,     CAD ,    ,    ,    ,    ,    ,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,JERY,    ,    ,         ,    ,    ,    ,    ,    ,
+         ,    ,QWRT,JERY,    ,    ,         ,    ,    ,    ,    ,    ,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-     RST1,    ,    ,    ,    ,LOCK,     SPCS,    ,    ,    ,    ,   
+         ,    ,    ,    ,    ,    ,     SPCS,    ,    ,    ,    ,   
   //`----+----+----+----+----+----'    `----+----+----+----+----+----'
   ),
 
-  [5] = KC_KEYMAP(
+  [_QWERTY] = KC_KEYMAP(
   //,----+----+----+----+----+----.    ,----+----+----+----+----+----.
-         ,    ,    ,    ,    ,    ,         ,    ,    ,    ,    ,    ,
+     QESC, Q  , W  , E  , R  , T  ,      Y  , U  , I  , O  , P  ,QUOT,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,    ,    ,    ,         ,    ,    ,    ,    ,    ,
+     TAB , A  , S  , D  , F  , G  ,      H  , J  , K  , L  ,SCLN, ENT,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,    ,    ,    ,         ,    ,    ,    ,    ,    ,
+     LSPO, Z  , X  , C  , V  , B  ,      N  , M  ,COMM,DOT ,SLSH,RSPC,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-     RST2,    ,    ,    ,    ,    ,         ,    ,    ,    ,    ,    
+     SPCT,QSFN,SPLT,AMPR,QNUM,BSPC,     SPC ,QSYM,ASTR,EXLM,LBRC,GBRC
   //`----+----+----+----+----+----'    `----+----+----+----+----+----'
   ),
 
-  [6] =  KEYMAP( \
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, RESET \
-  ),
-
-  [_CAPS] = KC_KEYMAP(
+  [_QNUMPAD] = KC_KEYMAP(
   //,----+----+----+----+----+----.    ,----+----+----+----+----+----.
-     ESC ,DQUO,LABK,RABK,CAPP,CAPY,     CAPF,CAPG,CAPC,CAPR,CAPL,DEL ,
+         ,    ,    ,    ,    ,    ,         ,  7 ,  8 ,  9 ,MINS,QUOT,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-     TAB ,CAPA,CAPO,CAPE,CAPU,CAPI,     CAPD,CAPH,CAPT,CAPN,CPS ,ENT ,
+         ,    ,    ,    ,    ,    ,         ,  4 ,  5 ,  6 ,PLUS, ENT,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,COLN,CAPQ,CAPJ,CAPK,CAPX,     CAPB,CAPM,CAPW,CAPV,CAPZ,CPLK,
+     LSFT,    ,    ,    ,    ,    ,         ,  1 ,  2 ,  3 ,ASTR, EQL,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,MINS,    ,QUES,     SPC ,    ,HASH,PIPE,LCBR,RCBR
+         ,    ,    ,    ,    ,BSPC,     SPC ,  0 ,  0 , DOT,SLSH,RGUI
   //`----+----+----+----+----+----'    `----+----+----+----+----+----'
   ),
 
-  [_CAPS2] = KC_KEYMAP(
+  [_QSYMBOLS] = KC_KEYMAP(
   //,----+----+----+----+----+----.    ,----+----+----+----+----+----.
-     ESC ,DQUO,LABK,RABK,CAPP,CAPY,     CAPF,CAPG,CAPC,CAPR,CAPL,BSPC,
+         ,EXLM, AT ,HASH,DLR ,PERC,     CIRC,AMPR,ASTR,LPRN,RPRN,QUOT,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-     TAB ,CAPA,CAPO,CAPE,CAPU,CAPI,     CAPD,CAPH,CAPT,CAPN,CPS ,ENT ,
+      F1 , F2 , F3 , F4 , F5 , F6 ,     TILD,EQL ,UNDS,LCBR,RCBR,PIPE,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-     DVRK,COLN,CAPQ,CAPJ,CAPK,CAPX,     CAPB,CAPM,CAPW,CAPV,CAPZ,DVRK,
+      F7 , F8 , F9 , F10, F11, F12,     GRV ,PLUS,MINS,LBRC,RBRC,BSLS,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,UNDS,MINS,QUES,     SPC ,    ,HASH,PIPE,LCBR,RCBR
+         ,    ,    ,    , NO ,BSPC,     SPC ,    ,    ,    ,    ,RGUI
   //`----+----+----+----+----+----'    `----+----+----+----+----+----'
   ),
 
-  [_RCAPS] = KC_KEYMAP(
+  [_QFN] = KC_KEYMAP(
   //,----+----+----+----+----+----.    ,----+----+----+----+----+----.
-     ESC ,DQUO,LABK,RABK,RAPP,RAPY,     RAPF,RAPG,RAPC,RAPR,RAPL,DEL ,
+         ,    ,    ,    , DEL,BSPC,         ,HOME, UP , END, INS,    ,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-     TAB ,RAPA,RAPO,RAPE,RAPU,RAPI,     RAPD,RAPH,RAPT,RAPN,RPS ,ENT ,
+         ,    ,    ,LSFT,LCTL, ENT,         ,LEFT,DOWN,RGHT, DEL,    ,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-     CPLK,COLN,RAPQ,RAPJ,RAPK,RAPX,     RAPB,RAPM,RAPW,RAPV,RAPZ,    ,
+         ,    ,    ,    ,    ,    ,         ,PGUP,PGDN,    ,    ,    ,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,MINS,    ,QUES,     SPC ,    ,HASH,PIPE,LCBR,RCBR
+         ,    ,    ,    ,    ,DEL ,         ,    ,    ,    ,    ,   
   //`----+----+----+----+----+----'    `----+----+----+----+----+----'
-  )
+  ),
 
+  [_QMACROS] = KC_KEYMAP(
+  //,----+----+----+----+----+----.    ,----+----+----+----+----+----.
+         ,DVRK,    ,EML ,    ,    ,         ,    ,INCL,    ,PSWD,    ,
+  //|----+----+----+----+----+----|    |----+----+----+----+----+----|
+         ,    ,    ,CAD ,    ,GLPK,         ,JERY,    ,IMGR,    ,    ,
+  //|----+----+----+----+----+----|    |----+----+----+----+----+----|
+         ,    ,    ,    ,    ,    ,         ,    ,PULL,PUSH,    ,    ,
+  //|----+----+----+----+----+----|    |----+----+----+----+----+----|
+         ,    ,    ,    ,    ,    ,     SPCS,    ,    ,    ,    ,   
+  //`----+----+----+----+----+----'    `----+----+----+----+----+----'
+  ) 
 };
 
 const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) // this is the function signature -- just copy/paste it into your keymap file as it is.
@@ -239,7 +190,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) //
       break;
     case 2:
       if (record->event.pressed) {
-        SEND_STRING("http://imgur.com/a/zu0bN");
+        SEND_STRING("http://imgur.com/gallery/PRDJm");
         return false;
       }
       break;
@@ -271,6 +222,12 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) //
       if (record->event.pressed){
         SEND_STRING("   ");
         return false;
+      }
+      break;
+    case 8:
+      if (record->event.pressed){
+        SEND_STRING("asdfASDFasdf12!@");
+        return MACRO ( T(ENT), END );
       }
       break;
   }
