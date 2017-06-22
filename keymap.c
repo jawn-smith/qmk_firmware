@@ -102,11 +102,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_MACROS] = KC_KEYMAP(
   //,----+----+----+----+----+----.    ,----+----+----+----+----+----.
-         ,    ,PULL,PUSH,PSWD,    ,         ,GLPK,    ,    ,IMGR,    ,
+         ,    ,PULL,PUSH,PSWD,    ,         ,GLPK,    ,    ,IMGR,QWRT,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
          ,    ,    ,EML ,    ,INCL,     CAD ,    ,    ,    ,    ,    ,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,QWRT,JERY,    ,    ,         ,    ,    ,    ,    ,    ,
+         ,    ,    ,JERY,    ,    ,         ,    ,    ,    ,    ,    ,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
          ,    ,    ,    ,    ,    ,     SPCS,    ,    ,    ,    ,   
   //`----+----+----+----+----+----'    `----+----+----+----+----+----'
@@ -162,7 +162,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_QMACROS] = KC_KEYMAP(
   //,----+----+----+----+----+----.    ,----+----+----+----+----+----.
-         ,DVRK,    ,EML ,    ,    ,         ,    ,INCL,    ,PSWD,    ,
+         ,    ,    ,EML ,    ,    ,         ,    ,INCL,    ,PSWD,DVRK,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
          ,    ,    ,CAD ,    ,GLPK,         ,JERY,    ,IMGR,    ,    ,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
@@ -232,4 +232,76 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) //
       break;
   }
   return MACRO_NONE;
+};
+
+void matrix_scan_user(void) {
+    uint8_t layer = biton32(layer_state);
+
+    switch (layer) {
+
+    case _DVORAK:
+      #ifdef RGBLIGHT_ENABLE
+      rgblight_setrgb(0x00,0xff,0x00);
+      #endif
+      break;
+
+    case _NUMPAD:
+      #ifdef RGBLIGHT_ENABLE
+      rgblight_setrgb(0x00,0x00,0xff);
+      #endif
+      break;
+
+    case _SYMBOLS:
+      #ifdef RGBLIGHT_ENABLE
+      rgblight_setrgb(0xff,0x00,0x00);
+      #endif
+      break;
+
+    case _FN:
+      #ifdef RGBLIGHT_ENABLE
+       rgblight_setrgb(0xff,0xff,0xff);
+      #endif
+      break;
+
+    case _MACROS:
+      #ifdef RGBLIGHT_ENABLE
+       rgblight_setrgb(0x00,0xff,0x00);
+      #endif
+      break;
+
+    case _QWERTY:
+      #ifdef RGBLIGHT_ENABLE
+      rgblight_setrgb(0xff,0x00,0xff);
+      #endif
+      break;
+
+    case _QNUMPAD:
+      #ifdef RGBLIGHT_ENABLE
+      rgblight_setrgb(0x00,0x00,0xff);
+      #endif
+      break;
+
+    case _QSYMBOLS:
+      #ifdef RGBLIGHT_ENABLE
+      rgblight_setrgb(0xff,0x00,0x00);
+      #endif
+      break;
+
+    case _QFN:
+      #ifdef RGBLIGHT_ENABLE
+       rgblight_setrgb(0xff,0xff,0xff);
+      #endif
+      break;
+
+    case _QMACROS:
+      #ifdef RGBLIGHT_ENABLE
+       rgblight_setrgb(0xff,0x00,0xff);
+      #endif
+      break;
+
+    default:
+      // none
+      break;
+    }
+
 };
