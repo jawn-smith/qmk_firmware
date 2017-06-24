@@ -45,6 +45,7 @@ extern keymap_config_t keymap_config;
 #define KC_PUSH M(6)
 #define KC_SPCS M(7)
 #define KC_PSWD M(8)
+#define KC_RED M(9)
 #define KC_CAD LALT(LCTL(KC_DEL))
 #define KC_LOCK LGUI(KC_L)
 #define KC_DVRK TO(_DVORAK)
@@ -230,11 +231,17 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) //
         return MACRO ( T(ENT), END );
       }
       break;
+/*    case 9:
+      if (record->event.pressed){
+        rgblight_setrgb(0xff,0x00,0x00);
+        return false;
+      }
+      break;*/
   }
   return MACRO_NONE;
 };
 
-void matrix_scan_user(void) {
+/*void matrix_scan_user(void) {
     uint8_t layer = biton32(layer_state);
 
     switch (layer) {
@@ -304,4 +311,4 @@ void matrix_scan_user(void) {
       break;
     }
 
-};
+};*/
