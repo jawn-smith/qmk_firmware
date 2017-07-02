@@ -45,7 +45,17 @@ extern keymap_config_t keymap_config;
 #define KC_PUSH M(6)
 #define KC_SPCS M(7)
 #define KC_PSWD M(8)
-#define KC_RED M(9)
+#define KC_DNCU M(9)
+#define KC_DNCD M(10)
+#define KC_DSCU M(11)
+#define KC_DSCD M(12)
+#define KC_QNCU M(13)
+#define KC_QNCD M(14)
+#define KC_QSCU M(15)
+#define KC_QSCD M(16)
+#define KC_QWCU M(17)
+#define KC_QWCD M(18)
+
 #define KC_CAD LALT(LCTL(KC_DEL))
 #define KC_LOCK LGUI(KC_L)
 #define KC_DVRK TO(_DVORAK)
@@ -61,7 +71,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
      LSPO,SCLN, Q  , J  , K  , X  ,      B  , M  , W  , V  , Z  ,RSPC,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-     SPCT,SPFN,SPLT,AMPR,NMPD,BSPC,     SPC ,SYMB,ASTR,EXLM,LBRC,GBRC
+     SPCT,SPFN,SPLT,AMPR,DNCU,BSPC,     SPC ,DSCU,ASTR,EXLM,LBRC,GBRC
   //`----+----+----+----+----+----'    `----+----+----+----+----+----'
   ),
 
@@ -73,7 +83,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
      LSFT,    ,    ,    ,    ,    ,         ,  1 ,  2 ,  3 ,ASTR, EQL,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,    ,    ,BSPC,     SPC ,  0 ,  0 , DOT,SLSH,RGUI
+         ,    ,    ,    ,DNCD,BSPC,     SPC ,  0 ,  0 , DOT,SLSH,RGUI
   //`----+----+----+----+----+----'    `----+----+----+----+----+----'
   ),
 
@@ -85,7 +95,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
       F7 , F8 , F9 , F10, F11, F12,     GRV ,PLUS,MINS,LBRC,RBRC,BSLS,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,    , NO ,BSPC,     SPC ,    ,    ,    ,    ,RGUI
+         ,    ,    ,    , NO ,BSPC,     SPC ,DSCD,    ,    ,    ,RGUI
   //`----+----+----+----+----+----'    `----+----+----+----+----+----'
   ),
 
@@ -103,7 +113,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_MACROS] = KC_KEYMAP(
   //,----+----+----+----+----+----.    ,----+----+----+----+----+----.
-         ,    ,PULL,PUSH,PSWD,    ,         ,GLPK,    ,    ,IMGR,QWRT,
+         ,    ,PULL,PUSH,PSWD,    ,         ,GLPK,    ,    ,IMGR,QWCU,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
          ,    ,    ,EML ,    ,INCL,     CAD ,    ,    ,    ,    ,    ,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
@@ -121,7 +131,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
      LSPO, Z  , X  , C  , V  , B  ,      N  , M  ,COMM,DOT ,SLSH,RSPC,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-     SPCT,QSFN,SPLT,AMPR,QNUM,BSPC,     SPC ,QSYM,ASTR,EXLM,LBRC,GBRC
+     SPCT,QSFN,SPLT,AMPR,QNCU,BSPC,     SPC ,QSCU,ASTR,EXLM,LBRC,GBRC
   //`----+----+----+----+----+----'    `----+----+----+----+----+----'
   ),
 
@@ -133,7 +143,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
      LSFT,    ,    ,    ,    ,    ,         ,  1 ,  2 ,  3 ,ASTR, EQL,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,    ,    ,BSPC,     SPC ,  0 ,  0 , DOT,SLSH,RGUI
+         ,    ,    ,    ,QNCD,BSPC,     SPC ,  0 ,  0 , DOT,SLSH,RGUI
   //`----+----+----+----+----+----'    `----+----+----+----+----+----'
   ),
 
@@ -145,7 +155,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
       F7 , F8 , F9 , F10, F11, F12,     GRV ,PLUS,MINS,LBRC,RBRC,BSLS,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,    , NO ,BSPC,     SPC ,    ,    ,    ,    ,RGUI
+         ,    ,    ,    , NO ,BSPC,     SPC ,QSCD,    ,    ,    ,RGUI
   //`----+----+----+----+----+----'    `----+----+----+----+----+----'
   ),
 
@@ -163,7 +173,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_QMACROS] = KC_KEYMAP(
   //,----+----+----+----+----+----.    ,----+----+----+----+----+----.
-         ,    ,    ,EML ,    ,    ,         ,    ,INCL,    ,PSWD,DVRK,
+         ,    ,    ,EML ,    ,    ,         ,    ,INCL,    ,PSWD,QWCD,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
          ,    ,    ,CAD ,    ,GLPK,         ,JERY,    ,IMGR,    ,    ,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
@@ -227,16 +237,80 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) //
       break;
     case 8:
       if (record->event.pressed){
-        SEND_STRING("asdfASDFasdf12!@");
+        SEND_STRING("this is a test");
         return MACRO ( T(ENT), END );
       }
       break;
-/*    case 9:
+    case 9:
       if (record->event.pressed){
+	layer_on(_NUMPAD);
+        rgblight_setrgb(0x00,0x00,0xff);
+        return false;
+      }
+      break;
+    case 10:
+      if (record->event.pressed){
+	layer_off(_NUMPAD);
+        rgblight_setrgb(0x00,0xff,0x00);
+        return false;
+      }
+      break;
+    case 11:
+      if (record->event.pressed){
+ 	layer_on(_SYMBOLS);
         rgblight_setrgb(0xff,0x00,0x00);
         return false;
       }
-      break;*/
+      break;
+    case 12:
+      if (record->event.pressed){
+	layer_off(_SYMBOLS);
+        rgblight_setrgb(0x00,0xff,0x00);
+        return false;
+      }
+      break;
+    case 13:
+      if (record->event.pressed){
+	layer_on(_QNUMPAD);
+        rgblight_setrgb(0x00,0x00,0xff);
+        return false;
+      }
+      break;
+    case 14:
+      if (record->event.pressed){
+	layer_off(_QNUMPAD);
+        rgblight_setrgb(0xff,0x00,0xff);
+        return false;
+      }
+      break;
+    case 15:
+      if (record->event.pressed){
+	layer_on(_QSYMBOLS);
+        rgblight_setrgb(0xff,0x00,0x00);
+        return false;
+      }
+      break;
+    case 16:
+      if (record->event.pressed){
+	layer_off(_QSYMBOLS);
+        rgblight_setrgb(0xff,0x00,0xff);
+        return false;
+      }
+      break;
+    case 17:
+      if (record->event.pressed){
+	layer_on(_QWERTY);
+        rgblight_setrgb(0xff,0x00,0xff);
+        return false;
+      }
+      break;
+    case 18:
+      if (record->event.pressed){
+        layer_off(_QWERTY);
+        rgblight_setrgb(0xff,0x00,0xff);
+        return false;
+      }
+      break;
   }
   return MACRO_NONE;
 };
