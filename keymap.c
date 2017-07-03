@@ -237,7 +237,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) //
       break;
     case 8:
       if (record->event.pressed){
-        SEND_STRING("this is a test");
+        SEND_STRING("asdfASDFasdf12!@");
         return MACRO ( T(ENT), END );
       }
       break;
@@ -306,8 +306,9 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) //
       break;
     case 18:
       if (record->event.pressed){
+	layer_off(_QMACROS);
         layer_off(_QWERTY);
-        rgblight_setrgb(0xff,0x00,0xff);
+        rgblight_setrgb(0x00,0xff,0x00);
         return false;
       }
       break;
