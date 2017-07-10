@@ -55,6 +55,8 @@ extern keymap_config_t keymap_config;
 #define KC_QSCD M(16)
 #define KC_QWCU M(17)
 #define KC_QWCD M(18)
+#define KC_LTOG M(19)
+#define KC_STEP M(20)
 
 #define KC_CAD LALT(LCTL(KC_DEL))
 #define KC_LOCK LGUI(KC_L)
@@ -119,7 +121,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
          ,    ,    ,JERY,    ,    ,         ,    ,    ,    ,    ,    ,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,    ,    ,    ,     SPCS,    ,    ,    ,    ,   
+     LTOG,    ,    ,    ,    ,STEP,     SPCS,    ,    ,    ,    ,   
   //`----+----+----+----+----+----'    `----+----+----+----+----+----'
   ),
 
@@ -244,63 +246,81 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) //
     case 9:
       if (record->event.pressed){
 	layer_on(_NUMPAD);
+	#ifdef RGBLIGHT_ENABLE
         rgblight_setrgb(0x00,0x00,0xff);
+	#endif
         return false;
       }
       break;
     case 10:
       if (record->event.pressed){
 	layer_off(_NUMPAD);
+	#ifdef RGBLIGHT_ENABLE
         rgblight_setrgb(0x00,0xff,0x00);
+	#endif
         return false;
       }
       break;
     case 11:
       if (record->event.pressed){
  	layer_on(_SYMBOLS);
+	#ifdef RGBLIGHT_ENABLE
         rgblight_setrgb(0xff,0x00,0x00);
+	#endif
         return false;
       }
       break;
     case 12:
       if (record->event.pressed){
 	layer_off(_SYMBOLS);
+	#ifdef RGBLIGHT_ENABLE
         rgblight_setrgb(0x00,0xff,0x00);
+	#endif
         return false;
       }
       break;
     case 13:
       if (record->event.pressed){
 	layer_on(_QNUMPAD);
+	#ifdef RGBLIGHT_ENABLE
         rgblight_setrgb(0x00,0x00,0xff);
+	#endif
         return false;
       }
       break;
     case 14:
       if (record->event.pressed){
 	layer_off(_QNUMPAD);
+	#ifdef RGBLIGHT_ENABLE
         rgblight_setrgb(0xff,0x00,0xff);
+	#endif
         return false;
       }
       break;
     case 15:
       if (record->event.pressed){
 	layer_on(_QSYMBOLS);
+	#ifdef RGBLIGHT_ENABLE
         rgblight_setrgb(0xff,0x00,0x00);
+	#endif
         return false;
       }
       break;
     case 16:
       if (record->event.pressed){
 	layer_off(_QSYMBOLS);
+	#ifdef RGBLIGHT_ENABLE
         rgblight_setrgb(0xff,0x00,0xff);
+	#endif
         return false;
       }
       break;
     case 17:
       if (record->event.pressed){
 	layer_on(_QWERTY);
+	#ifdef RGBLIGHT_ENABLE
         rgblight_setrgb(0xff,0x00,0xff);
+	#endif
         return false;
       }
       break;
@@ -308,7 +328,23 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) //
       if (record->event.pressed){
 	layer_off(_QMACROS);
         layer_off(_QWERTY);
+	#ifdef RGBLIGHT_ENABLE
         rgblight_setrgb(0x00,0xff,0x00);
+	#endif
+        return false;
+      }
+      break;
+     case 19:
+      if (record->event.pressed){
+        rgblight_toggle();
+        return false;
+      }
+      break;
+     case 20:
+      if (record->event.pressed){
+	#ifdef RGBLIGHT_ENABLE
+        rgblight_step();
+	#endif
         return false;
       }
       break;
@@ -316,74 +352,86 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) //
   return MACRO_NONE;
 };
 
-/*void matrix_scan_user(void) {
-    uint8_t layer = biton32(layer_state);
+void matrix_init_user(void)
+{
+	uint8_t i = 0;
 
-    switch (layer) {
+	/* snake rgb */
+	for (i = 0; i < RGBLED_NUM; i++)
+	{
+		led[i].r = 0xff;
+		led[i].g = 0x00;
+		led[i].b = 0x00;
+		
+		_delay_ms(63);
 
-    case _DVORAK:
-      #ifdef RGBLIGHT_ENABLE
-      rgblight_setrgb(0x00,0xff,0x00);
-      #endif
-      break;
+		led[i].r = 0x00;
+		led[i].g = 0x00;
+		led[i].b = 0x00;
+	}
+	for (i = (RGBLED_NUM - 1); i >= 0; i--)
+	{
+		led[i].r = 0xff;
+		led[i].g = 0x00;
+		led[i].b = 0x00;
+		
+		_delay_ms(63);
 
-    case _NUMPAD:
-      #ifdef RGBLIGHT_ENABLE
-      rgblight_setrgb(0x00,0x00,0xff);
-      #endif
-      break;
+		led[i].r = 0x00;
+		led[i].g = 0x00;
+		led[i].b = 0x00;
+	}
+	for (i = 0; i < RGBLED_NUM; i++)
+	{
+		led[i].r = 0x00;
+		led[i].g = 0xff;
+		led[i].b = 0x00;
+		
+		_delay_ms(63);
 
-    case _SYMBOLS:
-      #ifdef RGBLIGHT_ENABLE
-      rgblight_setrgb(0xff,0x00,0x00);
-      #endif
-      break;
+		led[i].r = 0x00;
+		led[i].g = 0x00;
+		led[i].b = 0x00;
+	}
+	for (i = (RGBLED_NUM - 1); i >= 0; i--)
+	{
+		led[i].r = 0x00;
+		led[i].g = 0xff;
+		led[i].b = 0x00;
+		
+		_delay_ms(63);
 
-    case _FN:
-      #ifdef RGBLIGHT_ENABLE
-       rgblight_setrgb(0xff,0xff,0xff);
-      #endif
-      break;
+		led[i].r = 0x00;
+		led[i].g = 0x00;
+		led[i].b = 0x00;
+	}
+	for (i = 0; i < RGBLED_NUM; i++)
+	{
+		led[i].r = 0x00;
+		led[i].g = 0x00;
+		led[i].b = 0xff;
+		
+		_delay_ms(63);
 
-    case _MACROS:
-      #ifdef RGBLIGHT_ENABLE
-       rgblight_setrgb(0x00,0xff,0x00);
-      #endif
-      break;
+		led[i].r = 0x00;
+		led[i].g = 0x00;
+		led[i].b = 0x00;
+	}
+	for (i = (RGBLED_NUM - 1); i >= 0; i--)
+	{
+		led[i].r = 0x00;
+		led[i].g = 0x00;
+		led[i].b = 0xff;
+		
+		_delay_ms(63);
 
-    case _QWERTY:
-      #ifdef RGBLIGHT_ENABLE
-      rgblight_setrgb(0xff,0x00,0xff);
-      #endif
-      break;
+		led[i].r = 0x00;
+		led[i].g = 0x00;
+		led[i].b = 0x00;
+	}
 
-    case _QNUMPAD:
-      #ifdef RGBLIGHT_ENABLE
-      rgblight_setrgb(0x00,0x00,0xff);
-      #endif
-      break;
+	_delay_ms(100);
 
-    case _QSYMBOLS:
-      #ifdef RGBLIGHT_ENABLE
-      rgblight_setrgb(0xff,0x00,0x00);
-      #endif
-      break;
-
-    case _QFN:
-      #ifdef RGBLIGHT_ENABLE
-       rgblight_setrgb(0xff,0xff,0xff);
-      #endif
-      break;
-
-    case _QMACROS:
-      #ifdef RGBLIGHT_ENABLE
-       rgblight_setrgb(0xff,0x00,0xff);
-      #endif
-      break;
-
-    default:
-      // none
-      break;
-    }
-
-};*/
+	/* turn to green */
+	rgblight_setrgb(0x00,0xff,0x00);
+}
