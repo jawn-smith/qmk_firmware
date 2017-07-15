@@ -103,7 +103,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_FN] = KC_KEYMAP(
   //,----+----+----+----+----+----.    ,----+----+----+----+----+----.
-         ,    ,    ,    , DEL,BSPC,         ,HOME, UP , END, INS,    ,
+         ,    ,    ,    , DEL,BSPC,         ,HOME, UP , END, INS,PSCR,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
          ,    ,    ,LSFT,LCTL, ENT,         ,LEFT,DOWN,RGHT, DEL,    ,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
@@ -163,9 +163,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_QFN] = KC_KEYMAP(
   //,----+----+----+----+----+----.    ,----+----+----+----+----+----.
-         ,    ,    ,    , DEL,BSPC,         ,HOME, UP , END, INS,    ,
+         ,    ,    ,    , DEL,BSPC,         ,HOME, UP , END, INS,PSCR,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
-         ,    ,    ,LSFT,LCTL, ENT,         ,LEFT,DOWN,RGHT, DEL,    ,
+         ,    ,    ,LSFT,LCTL, ENT,         ,LEFT,DOWN,RGHT, DEL,   ,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
          ,    ,    ,    ,    ,    ,         ,PGUP,PGDN,    ,    ,    ,
   //|----+----+----+----+----+----|    |----+----+----+----+----+----|
@@ -354,84 +354,7 @@ const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) //
 
 void matrix_init_user(void)
 {
-	uint8_t i = 0;
-
-	/* snake rgb */
-	for (i = 0; i < RGBLED_NUM; i++)
-	{
-		led[i].r = 0xff;
-		led[i].g = 0x00;
-		led[i].b = 0x00;
-		
-		_delay_ms(63);
-
-		led[i].r = 0x00;
-		led[i].g = 0x00;
-		led[i].b = 0x00;
-	}
-	for (i = (RGBLED_NUM - 1); i >= 0; i--)
-	{
-		led[i].r = 0xff;
-		led[i].g = 0x00;
-		led[i].b = 0x00;
-		
-		_delay_ms(63);
-
-		led[i].r = 0x00;
-		led[i].g = 0x00;
-		led[i].b = 0x00;
-	}
-	for (i = 0; i < RGBLED_NUM; i++)
-	{
-		led[i].r = 0x00;
-		led[i].g = 0xff;
-		led[i].b = 0x00;
-		
-		_delay_ms(63);
-
-		led[i].r = 0x00;
-		led[i].g = 0x00;
-		led[i].b = 0x00;
-	}
-	for (i = (RGBLED_NUM - 1); i >= 0; i--)
-	{
-		led[i].r = 0x00;
-		led[i].g = 0xff;
-		led[i].b = 0x00;
-		
-		_delay_ms(63);
-
-		led[i].r = 0x00;
-		led[i].g = 0x00;
-		led[i].b = 0x00;
-	}
-	for (i = 0; i < RGBLED_NUM; i++)
-	{
-		led[i].r = 0x00;
-		led[i].g = 0x00;
-		led[i].b = 0xff;
-		
-		_delay_ms(63);
-
-		led[i].r = 0x00;
-		led[i].g = 0x00;
-		led[i].b = 0x00;
-	}
-	for (i = (RGBLED_NUM - 1); i >= 0; i--)
-	{
-		led[i].r = 0x00;
-		led[i].g = 0x00;
-		led[i].b = 0xff;
-		
-		_delay_ms(63);
-
-		led[i].r = 0x00;
-		led[i].g = 0x00;
-		led[i].b = 0x00;
-	}
-
-	_delay_ms(100);
-
 	/* turn to green */
+        rgblight_mode(1);
 	rgblight_setrgb(0x00,0xff,0x00);
 }
